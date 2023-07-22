@@ -119,6 +119,27 @@
       color: pink;
       margin: 8px;
     }
+    @media only screen and (max-width: 768px) {
+      /* For tablets and smaller devices */
+      .alarms-container {
+        max-width: 100%;
+      }
+    }
+
+    @media only screen and (max-width: 576px) {
+      /* For mobile phones */
+      .set-alarm-container {
+        display: block;
+      }
+
+      .set-alarm input,
+      .set-alarm select,
+      .set-alarm button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
   </style>
 </head>
 <body>
