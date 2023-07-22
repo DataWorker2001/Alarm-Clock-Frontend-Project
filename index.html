@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alarm Clock</title>
+  <!-- Add CSS frameworks (e.g., Bootstrap) here -->
+  <!-- <link rel="stylesheet" href="path/to/your/css/framework.css"> -->
+
+  <style>
+    /* Body styling */
+    body {
+      /* Background image */
+      background-image: url('./Clock.jpeg');
+      /* Background position relative to the viewport */
+      background-position: relative;
+      /* Fixed background attachment, so the image doesn't scroll with content */
+      background-attachment: fixed;
+      /* Background size to cover the entire viewport */
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Clock styling */
+    .clock {
+      font-size: 3rem;
+      margin: 30px;
+      color: rgb(74, 74, 251);
+      background-color: rgba(255, 164, 194, 0.211);
+    }
+
+    /* Set Alarm container styling */
+    .set-alarm {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+    }
+
+    .set-alarm input,
+    .set-alarm select,
+    .set-alarm button {
+      font-size: 1rem;
+      padding: 10px;
+      border: 2px solid green;
+      border-radius: 5px;
+      margin-right: 15px;
+      font-weight: bold;
+      color: brown;
+      background-color: wheat;
+    }
+
+    .set-alarm button {
+      background-color: aqua;
+      color: brown;
+      font-weight: bolder;
+      cursor: pointer;
+    }
+
+    /* Alarms list styling */
+    .alarms {
+      list-style: none;
+      padding: 5px;
+      margin: 20px;
+    }
+
+    .alarms li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 10px;
+      background-color: rgb(248, 248, 113);
+      border-bottom: 1px solid #ccc;
+    }
+
+    .alarms li button {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .alarms li:hover {
+      background-color: rgb(137, 250, 137);
+    }
+
+    /* Additional Styling */
+    .clock-container {
+      background-color: #fff;
+      border-radius: 50%;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+    }
+
+    .set-alarm-container {
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+    }
+
+    .alarms-container {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: rgb(147, 18, 147);
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    h2 {
+      color: pink;
+      margin: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Clock display -->
+  <h1>✨🕤  Alarm Clock 🕤 ✨ </h1>
+  <div class="clock">
+    <span id="time"></span>
+  </div>
+
+  <!-- Set Alarm section -->
+  <div class="set-alarm">
+    <input type="number" id="hours" min="1" max="12" placeholder="Hours">
+    <input type="number" id="minutes" min="0" max="59" placeholder="Mins">
+    <input type="number" id="seconds" min="0" max="59" placeholder="Secs">
+    <select id="amPm">
+      <option value="AM">AM</option>
+      <option value="PM">PM</option>
+    </select>
+    <button id="setAlarmBtn" style="background-color: aqua;color:brown; font-weight: bolder;padding: 10px; cursor: pointer;">Set Alarm</button>
+  </div>
+
+  <h2>📋 #List of Upcoming Alarms!</h2>
+
+  <!-- Alarms list -->
+  <ul class="alarms" id="alarmsList">
+    <!-- Alarms will be dynamically added here -->
+    
+  </ul>
+
+  <script>
+    // Get elements from the DOM
+    const clockDisplay = document.getElementById('time');
+    const setAlarmBtn = document.getElementById('setAlarmBtn');
+    const alarmsList = document.getElementById('alarmsList');
+
+    // Array to store alarms
+    const alarms = [];
+
+    // Function to display the current time
+    function displayTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      // Convert to 12-hour format
+      const formattedHours = hours % 12 || 12;
+
+      // Add leading zero to minutes and seconds if needed
+      const formattedMinutes = String(minutes).padStart(2, '0');
+      const formattedSeconds = String(seconds).padStart(2, '0');
+
+      // Update the clock display
+      clockDisplay.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${hours >= 12 ? 'PM' : 'AM'}`;
+    }
+
+    // Function to add an alarm to the list
+    function addAlarmToList(alarm) {
+      const li = document.createElement('li');
+      li.textContent = `${alarm.hours}:${alarm.minutes}:${alarm.seconds} ${alarm.amPm}`;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => deleteAlarm(alarm.id));
+
+      li.appendChild(deleteButton);
+      alarmsList.appendChild(li);
+    }
+
+    // Function to delete an alarm
+    function deleteAlarm(alarmId) {
+      const alarmIndex = alarms.findIndex(alarm => alarm.id === alarmId);
+      if (alarmIndex !== -1) {
+        alarms.splice(alarmIndex, 1);
+        updateAlarmsList();
+      }
+    }
+
+    // Function to update the alarms list
+    function updateAlarmsList() {
+      alarmsList.innerHTML = '';
+      alarms.forEach(alarm => addAlarmToList(alarm));
+    }
+
+    // Function to check for alarms and trigger alerts
+    function checkAlarms() {
+      const now = new Date();
+      const currentTime = now.getTime();
+
+      alarms.forEach(alarm => {
+        const alarmTime = new Date(now);
+        alarmTime.setHours(alarm.hours);
+        alarmTime.setMinutes(alarm.minutes);
+        alarmTime.setSeconds(alarm.seconds);
+        const alarmTimeMillis = alarmTime.getTime();
+
+        if (alarmTimeMillis === currentTime) {
+          alert('Alarm triggered!');
+          deleteAlarm(alarm.id); // Remove the alarm that triggered the alert
+        }
+      });
+    }
+
+    // Update the clock display every second
+    setInterval(displayTime, 1000);
+
+    // Set Alarm button click event
+    setAlarmBtn.addEventListener('click', () => {
+      const hours = parseInt(document.getElementById('hours').value);
+      const minutes = parseInt(document.getElementById('minutes').value);
+      const seconds = parseInt(document.getElementById('seconds').value);
+      const amPm = document.getElementById('amPm').value;
+
+      // Create a unique ID for the alarm
+      const alarmId = Date.now();
+
+      // Add the alarm to the alarms array
+      alarms.push({
+        id: alarmId,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        amPm: amPm
+      });
+
+      // Update the alarms list
+      updateAlarmsList();
+    });
+
+    // Check for alarms every second
+    setInterval(checkAlarms, 1000);
+  </script>
+</body>
+</html>
