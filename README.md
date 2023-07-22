@@ -16,13 +16,13 @@ This is a simple Alarm Clock web application that allows users to set alarms, vi
 To use and deploy this Alarm Clock web application, follow these steps:<br/>
 
 1) Clone this repository to your local machine or download this main (root) folder:
-git clone https://github.com/DataWorker2001/Alarm-Clock-Frontend-Project
-2) Navigate to the original project file directory:
+   (https://github.com/DataWorker2001/Alarm-Clock-Frontend-Project.git)
+3) Navigate to the original project file directory:
 Alarm-Clock-Frontend-Project/public/index.html
  
-3) Usage:-
+4) Usage:-
 To run the webpage, open the index.html and right click within the code window and Run with Live Server
-4) On completing step 3 you must be able to see a webpage showing the alarm clock app in front of you.
+5) On completing step 3 you must be able to see a webpage showing the alarm clock app in front of you.
 
 ## Deployment:-
 1) To deploy the application to Render, follow these steps:
