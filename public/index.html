@@ -75,15 +75,19 @@
       padding: 10px;
       margin: 10px;
       background-color: rgb(248, 248, 113);
+      font-weight: bolder;
+      color: rgb(84, 18, 146);
       border-bottom: 1px solid #ccc;
     }
 
     .alarms li button {
       background-color: #dc3545;
-      color: #fff;
+      color: whitesmoke;
       border: none;
-      padding: 5px 10px;
+      padding: 10px 15px;
       cursor: pointer;
+      font-weight: bold;
+      margin: 4px;
     }
 
     .alarms li:hover {
@@ -109,6 +113,7 @@
     .alarms-container {
       max-width: 300px;
       margin: 0 auto;
+      border: 2px solid brown;
     }
 
     h1 {
@@ -249,6 +254,23 @@
     // Update the clock display every second
     setInterval(displayTime, 1000);
 
+      // Function to save alarms to local storage
+    function saveAlarmsToLocalStorage() {
+      localStorage.setItem('alarms', JSON.stringify(alarms));
+    }
+
+    // Load alarms from local storage (if any) when the page loads
+    function loadAlarmsFromLocalStorage() {
+      const savedAlarms = localStorage.getItem('alarms');
+      if (savedAlarms) {
+        alarms.push(...JSON.parse(savedAlarms));
+        updateAlarmsList();
+      }
+    }
+
+    // Update the clock display every second
+    setInterval(displayTime, 1000);
+
     // Set Alarm button click event
     setAlarmBtn.addEventListener('click', () => {
       const hours = parseInt(document.getElementById('hours').value);
@@ -270,7 +292,13 @@
 
       // Update the alarms list
       updateAlarmsList();
+
+      // Save the alarms to local storage
+      saveAlarmsToLocalStorage();
     });
+
+    // Load alarms from local storage when the page loads
+    loadAlarmsFromLocalStorage();
 
     // Check for alarms every second
     setInterval(checkAlarms, 1000);
