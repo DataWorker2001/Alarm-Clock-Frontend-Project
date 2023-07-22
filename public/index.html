@@ -205,16 +205,19 @@
     // Function to check for alarms and trigger alerts
     function checkAlarms() {
       const now = new Date();
-      const currentTime = now.getTime();
 
       alarms.forEach(alarm => {
         const alarmTime = new Date(now);
         alarmTime.setHours(alarm.hours);
         alarmTime.setMinutes(alarm.minutes);
         alarmTime.setSeconds(alarm.seconds);
-        const alarmTimeMillis = alarmTime.getTime();
 
-        if (alarmTimeMillis === currentTime) {
+        if (
+          alarm.amPm === (now.getHours() >= 12 ? 'PM' : 'AM') &&
+          alarm.hours === (now.getHours() % 12 || 12) &&
+          alarm.minutes === now.getMinutes() &&
+          alarm.seconds === now.getSeconds()
+        ) {
           alert('Alarm triggered!');
           deleteAlarm(alarm.id); // Remove the alarm that triggered the alert
         }
